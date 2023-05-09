@@ -15,7 +15,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.base import Base
 from db.session import get_db
 from apis.base import api_router
-
+from core.config import settings           #new 
+from tests.utils.users import authentication_token_from_email   #new
 
 def start_application():
     app = FastAPI()
@@ -53,7 +54,7 @@ def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     connection.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def client(
     app: FastAPI, db_session: SessionTesting
 ) -> Generator[TestClient, Any, None]:
@@ -71,3 +72,10 @@ def client(
     app.dependency_overrides[get_db] = _get_test_db
     with TestClient(app) as client:
         yield client
+
+
+@pytest.fixture(scope="module")           #new function
+def normal_user_token_headers(client: TestClient, db_session: Session):
+    return  authentication_token_from_email(
+        client=client, email=settings.TEST_USER_EMAIL, db=db_session
+    )

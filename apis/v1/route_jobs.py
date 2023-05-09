@@ -1,17 +1,19 @@
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
-from typing import List        #new
+from typing import List, Optional        #new
 from db.session import get_db
 from db.models.jobs import Job
+from db.models.users import User
 from schemas.jobs import JobCreate,ShowJob
-from db.repository.jobs import create_new_job,retreive_job ,list_jobs  #new #new import retrieve_job
+from db.repository.jobs import create_new_job,retreive_job ,list_jobs, search_job,update_job_by_id  #new #new import retrieve_job
+from apis.v1.route_login import get_current_user_from_token  #new
 
 router = APIRouter()
 
 
 @router.post("/create-job/",response_model=ShowJob)
-def create_job(job: JobCreate,db: Session = Depends(get_db)):
+def create_job(job: JobCreate,db: Session = Depends(get_db),current_user:User = Depends(get_current_user_from_token)):  #new dependency here):
     current_user = 1
     job = create_new_job(job=job,db=db,owner_id=current_user)
     return job
@@ -29,7 +31,7 @@ def read_job(id:int,db:Session = Depends(get_db)):
 @router.get("/all",response_model=List[ShowJob]) #new
 def read_jobs(db:Session = Depends(get_db)):
     jobs = list_jobs(db=db)
-    return jobs
+    return jobs or [] 
 
 
 @router.put("/update/{id}")   #new
@@ -40,3 +42,34 @@ def update_job(id: int,job: JobCreate,db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Job with id {id} not found")
     return {"msg":"Successfully updated data."}
+
+from db.repository.jobs import delete_job_by_id
+
+@router.delete("/delete/{id}")
+def delete_job(id: int,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
+    # current_user_id = 1
+    job=retreive_job(id=id,db=db)
+    if not job:
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Job with {id} does not exist")
+    print(job.owner_id,current_user.id,current_user.is_superuser)
+    if job.owner_id== current_user.id or current_user.is_superuser:
+        delete_job_by_id(id=id,db=db,owner_id=current_user.id)
+        # return {"msg":"Successfully deleted."}
+        return {"detail": "Successfully deleted."} 
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail=f"You are not permitted!!!!")
+    # message = delete_job_by_id(id=id,db=db,owner_id=current_user_id)
+    # if not message:
+    #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+    #                         detail=f"Job with id {id} not found")
+    # return {"msg":"Successfully deleted."}
+
+
+
+@router.get("/autocomplete")
+def autocomplete(term: Optional[str] = None, db: Session = Depends(get_db)):
+    jobs = search_job(term, db=db)
+    job_titles = []
+    for job in jobs:
+        job_titles.append(job.title)
+    return job_titles

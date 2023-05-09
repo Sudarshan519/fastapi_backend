@@ -22,6 +22,7 @@ class JobCreate(JobBase):
     
 #this will be used to format the response to not to have id,owner_id etc
 class ShowJob(JobBase):
+    id: int
     title : str 
     company: str 
     company_url : Optional[str]

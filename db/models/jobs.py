@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean,Date, ForeignKey
 from sqlalchemy.orm import relationship
-
+from sqlalchemy.orm import Session
 from db.base_class import Base
+from schemas.jobs import JobCreate
 
 
 class Job(Base):

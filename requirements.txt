@@ -26,3 +26,14 @@ passlib[bcrypt]
 #for testing       #new
 pytest
 requests
+
+
+#for jwt tokens    #new
+python-jose
+
+
+#for  cleaning up codebase on each commit
+pre-commit
+
+#for accessing form data       #new
+python-multipart
