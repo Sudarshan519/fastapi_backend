@@ -1,0 +1,28 @@
+fastapi
+uvicorn
+
+
+#for template  #new
+jinja2
+
+
+#for static files
+aiofiles
+#for database   #new
+sqlalchemy         
+
+#for loading environment variables  #new
+python-dotenv
+mysql-connector-python
+
+#for email validation            #new
+pydantic[email] 
+
+
+#hashing              #new
+passlib[bcrypt] 
+
+
+#for testing       #new
+pytest
+requests
