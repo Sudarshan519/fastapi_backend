@@ -37,3 +37,8 @@ pre-commit
 
 #for accessing form data       #new
 python-multipart
+
+
+# Backgound task
+redis==4.5.4
+celery==5.2.7
