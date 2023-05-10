@@ -42,6 +42,9 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
+    response.set_cookie(key="name",value=user.email,httponly=True)
+    response.set_cookie(key="access_token",value=f"Bearer {access_token}", httponly=True)  #set HttpOnly cookie in response
+
     return {"access_token": access_token, "token_type": "Bearer"}
 
 

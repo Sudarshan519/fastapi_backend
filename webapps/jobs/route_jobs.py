@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 from fastapi import APIRouter
 from fastapi import Request,Depends,responses,status
 from fastapi.templating import Jinja2Templates
@@ -26,8 +26,9 @@ router =APIRouter(include_in_schema=False)
 @router.get("/")
 async def home(request: Request, db: Session = Depends(get_db),msg:str = None):   #new
     jobs = list_jobs(db=db)
+    cookie_exist=True if request.cookies.get('name') is not None else False
     return templates.TemplateResponse(
-        "general_pages/homepage.html", {"request": request, "jobs": jobs,"msg":msg}   #new
+        "general_pages/homepage.html", {"request": request, "jobs": jobs,"msg":msg,"name": "Welcome "+request.cookies.get('name')} if cookie_exist else {"request": request, "jobs": jobs,"msg":msg,}  #new
     )
 
 
@@ -35,9 +36,10 @@ async def home(request: Request, db: Session = Depends(get_db),msg:str = None): 
 @router.get("/details/{id}")             #new
 def job_detail(id:int,request: Request,db:Session = Depends(get_db)): 
     job = retreive_job(id=id, db=db)
-    print(job)
+    # print(job)
+    cookie_exist=True if request.cookies.get('name') is not None else False
     return templates.TemplateResponse(
-        "jobs/detail.html", {"request": request,"job":job}
+        "jobs/detail.html", {"request": request,"job":job,"name": "Welcome "+request.cookies.get('name')} if cookie_exist else {"request": request,  }
     )
 
 
