@@ -1,6 +1,6 @@
 
 from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
-from fastapi import Depends,APIRouter
+from fastapi import Depends,APIRouter, Request
 from jose import JWTError, jwt
 from schemas.tokens import Token
 from sqlalchemy.orm import Session
@@ -42,21 +42,22 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "Bearer"}
 
 
 
 
 
-oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/login/token")   #changed to use our implementation
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")  #new
+# oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/login/token")   #changed to use our implementation
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")  #new
 
 #new function, It works as a dependency
-def get_current_user_from_token(token: str = Depends(oauth2_scheme),db: Session=Depends(get_db)): 
+def get_current_user_from_token(  token: str = Depends(oauth2_scheme),db: Session=Depends(get_db)): 
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
     )
+
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         username: str = payload.get("sub")
