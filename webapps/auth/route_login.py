@@ -1,4 +1,4 @@
-from flask_login import AnonymousUserMixin
+
 from apis.v1.route_login import login_for_access_token
 from db.repository.jobs import list_jobs
 from db.session import get_db
