@@ -17,7 +17,7 @@ class Settings:
     DATABASE_URL = f"mysql+mysqlconnector://{MySQL_USER}:{MySQL_PASSWORD}@{MySQL_SERVER}:{MySQL_PORT}/{MySQL_DB}"
     SECRET_KEY :str = os.getenv("SECRET_KEY")   #new
     ALGORITHM = "HS256"                         #new
-    ACCESS_TOKEN_EXPIRE_MINUTES = 30  #in mins  #new
+    ACCESS_TOKEN_EXPIRE_MINUTES = 60*24  #in mins  #new
     TEST_USER_EMAIL = "test@example.com"  #new
     CELERY_BROKER_URL: str = os.environ.get("CELERY_BROKER_URL","redis://127.0.0.1:6379/0")
     CELERY_RESULT_BACKEND: str = os.environ.get("CELERY_RESULT_BACKEND","redis://127.0.0.1:6379/0")

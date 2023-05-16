@@ -19,7 +19,7 @@ from apis.utils import OAuth2PasswordBearerWithCookie    #new
 
 
 router = APIRouter()
-
+# @login_required
 def authenticate_user(username: str, password: str,db: Session):
     user = get_user(username=username,db=db)
     print(user)
@@ -42,8 +42,9 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    response.set_cookie(key="name",value=user.email,httponly=True)
-    response.set_cookie(key="access_token",value=f"Bearer {access_token}", httponly=True)  #set HttpOnly cookie in response
+    response.set_cookie(key="name",value=user.email,httponly=False)
+    response.set_cookie(key="access_token",value=f"Bearer {access_token}",httponly=True
+                        )  #set HttpOnly cookie in response
 
     return {"access_token": access_token, "token_type": "Bearer"}
 
@@ -53,22 +54,27 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
 
 # oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/login/token")   #changed to use our implementation
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")  #new
-
+ 
 #new function, It works as a dependency
-def get_current_user_from_token(  token: str = Depends(oauth2_scheme),db: Session=Depends(get_db)): 
+def get_current_user_from_token(token: str = Depends(oauth2_scheme),db: Session=Depends(get_db)): 
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
     )
-
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        print(payload)
         username: str = payload.get("sub")
+        print(payload)
+        print(username)
         print("username/email extracted is ",username)
         if username is None:
             raise credentials_exception
-    except JWTError:
-        raise credentials_exception
+    except Exception as e:
+        print(e)
+    # except JWTError:
+            
+    #     raise credentials_exception
     user = get_user(username=username,db=db)
     if user is None:
         raise credentials_exception

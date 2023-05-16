@@ -14,8 +14,9 @@ router = APIRouter()
 
 @router.post("/create-job/",response_model=ShowJob)
 def create_job(job: JobCreate,db: Session = Depends(get_db),current_user:User = Depends(get_current_user_from_token)):  #new dependency here):
-    current_user = 1
-    job = create_new_job(job=job,db=db,owner_id=current_user)
+    # current_user = 1
+    print(current_user)
+    job = create_new_job(job=job,db=db,owner_id=current_user.id)
     return job
 
 
@@ -48,6 +49,7 @@ from db.repository.jobs import delete_job_by_id
 @router.delete("/delete/{id}")
 def delete_job(id: int,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     # current_user_id = 1
+    print(current_user)
     job=retreive_job(id=id,db=db)
     if not job:
         return HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Job with {id} does not exist")
