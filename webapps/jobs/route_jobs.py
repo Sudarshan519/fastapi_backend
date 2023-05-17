@@ -2,9 +2,10 @@ from typing import Optional, Union
 from fastapi import APIRouter
 from fastapi import Request,Depends,responses,status
 from fastapi.templating import Jinja2Templates
-from sqlalchemy.orm import Session 
+from sqlalchemy.orm import Session
+from db.repository.jobs import delete_job_by_id 
 
-from db.repository.jobs import list_jobs, search_job
+from db.repository.jobs import list_jobs, search_job,filter_jobs 
 from db.repository.users import create_new_user
 from db.session import get_db
 from db.repository.jobs import retreive_job
@@ -42,7 +43,7 @@ def job_detail(id:int,request: Request,db:Session = Depends(get_db)):
     
     cookie_exist=True if request.cookies.get('name') is not None else False
     return templates.TemplateResponse(
-        "jobs/detail.html", {"request": request,"job":job,"name": "Welcome "+request.cookies.get('name')} if cookie_exist else {"request": request,  }
+"jobs/detail.html", {"request": request,"job":job,"name": "Welcome "+request.cookies.get('name')} if cookie_exist else {"request": request, "job":job }
     )
 
 
@@ -90,12 +91,28 @@ async def create_job(request: Request, db: Session = Depends(get_db) ):
 
 
 @router.get("/delete-job/")
-def show_jobs_to_delete(request: Request, db: Session = Depends(get_db),user:User= Depends(get_current_user_from_token)):
-    jobs = list_jobs(db=db)
-    return templates.TemplateResponse(
-        "jobs/show_jobs_to_delete.html", {"request": request, "jobs": jobs}
-    )
+def show_jobs_to_delete(request: Request, db: Session = Depends(get_db)):
+    # jobs = list_jobs(db=db)
+    cookie_exist=True if request.cookies.get('name') is not None else False
+    token = request.cookies.get("access_token")
+             
+    scheme, param = get_authorization_scheme_param(
+                token
+            )  # scheme will hold "Bearer" and param will hold actual token value
+    print(token)
+    current_user: User = get_current_user_from_token(token=param, db=db)
+    jobs=filter_jobs(db=db,ownerId=current_user.id)
 
+    dict={"request": request, "jobs": jobs}
+
+    dict['name']= request.cookies.get('name') if cookie_exist else dict
+    return templates.TemplateResponse(
+        "jobs/show_jobs_to_delete.html",dict
+    )
+@router.post("/delete-job/{id}")
+def delete_jobs(id:int,request:Request,db:Session=Depends(get_db)):
+    delete_job_by_id(id=id )
+    return  
 
 @router.get("/search/")
 def search(

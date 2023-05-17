@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
 from typing import List, Optional        #new
@@ -47,8 +47,9 @@ def update_job(id: int,job: JobCreate,db: Session = Depends(get_db)):
 from db.repository.jobs import delete_job_by_id
 
 @router.delete("/delete/{id}")
-def delete_job(id: int,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
+def delete_job(id: int,request:Request,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     # current_user_id = 1
+    print(request.cookies)
     print(current_user)
     job=retreive_job(id=id,db=db)
     if not job:

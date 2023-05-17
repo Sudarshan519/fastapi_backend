@@ -1,12 +1,12 @@
 
 from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
-from fastapi import Depends,APIRouter, Request
+from fastapi import Cookie, Depends,APIRouter, Request ,Depends, FastAPI, Header, HTTPException
 from jose import JWTError, jwt
 from schemas.tokens import Token
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from fastapi import status,HTTPException
-
+from typing_extensions import Annotated
 from db.session import get_db
 from core.hashing import Hasher
 from schemas.tokens import Token
@@ -15,7 +15,7 @@ from core.security import create_access_token
 from core.config import settings
 from fastapi import Response    #new
 from apis.utils import OAuth2PasswordBearerWithCookie    #new
-
+from fastapi.security.utils import get_authorization_scheme_param
 
 
 router = APIRouter()
@@ -51,32 +51,27 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
 
 
 
+oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/login/token")
 
-# oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/login/token")   #changed to use our implementation
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")  #new
- 
-#new function, It works as a dependency
-def get_current_user_from_token(token: str = Depends(oauth2_scheme),db: Session=Depends(get_db)): 
+
+def get_current_user_from_token(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
     )
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        print(payload)
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         username: str = payload.get("sub")
-        print(payload)
-        print(username)
-        print("username/email extracted is ",username)
+        print("username/email extracted is ", username)
         if username is None:
             raise credentials_exception
-    except Exception as e:
-        print(e)
-    # except JWTError:
-            
-    #     raise credentials_exception
-    user = get_user(username=username,db=db)
+    except JWTError:
+        raise credentials_exception
+    user = get_user(username=username, db=db)
     if user is None:
         raise credentials_exception
     return user
-

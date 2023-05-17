@@ -1,4 +1,6 @@
+from fastapi import Depends
 from sqlalchemy.orm import Session
+from db.session import get_db
 
 from schemas.jobs import JobCreate
 from db.models.jobs import Job
@@ -21,7 +23,9 @@ def list_jobs(db : Session):    #new
         jobs = db.query(Job).all()#.filter(Job.is_active == True)#.all()#.filter(Job.is_active == True)
   
         return jobs 
-    
+def filter_jobs(db:Session,ownerId:int):
+    jobs=db.query(Job).filter(Job.owner_id==ownerId)
+    return jobs
 
 def update_job_by_id(id:int, job: JobCreate,db: Session,owner_id):
     existing_job = db.query(Job).filter(Job.id == id)
@@ -32,7 +36,7 @@ def update_job_by_id(id:int, job: JobCreate,db: Session,owner_id):
     db.commit()
     return 1
 
-def delete_job_by_id(id: int,db: Session,owner_id):
+def delete_job_by_id(id: int,db:Session,owner_id):
     existing_job = db.query(Job).filter(Job.id == id)
     if not existing_job.first():
         return 0

@@ -72,12 +72,19 @@
           </a>
           <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="{% if name is defined %} /post-a-job/       {%else%}# {% endif %} "onclick="#window.location.href='/post-a-job/'"> Create
+            {% if name is defined and name != null %}      <li><a class="dropdown-item" href="{% if name is defined %} /post-a-job/       {%else%}# {% endif %} "onclick="#window.location.href='/post-a-job/'"> Create
                 job</a>
-            </li>
+              
+            </li>   {% endif %}
             <li>
               <hr class="dropdown-divider">
             </li>
+            {% if name is defined and name != null %}  <li><a class="dropdown-item" href="{% if name is defined %}/delete-job/ {%else%}/login/ {% endif %}">
+             
+                Delete
+           
+ 
+              </a></li>      {%else%} {% endif %}
             <li><a class="dropdown-item" href="{% if name is defined %}/logout/ {%else%}/login/ {% endif %}">
                 {% if name is defined and name != null %}
                 Logout
@@ -85,6 +92,7 @@
 
                 Login
                 {% endif %}</a></li>
+                
           </ul>
 
         <li class="nav-item dropdown">
