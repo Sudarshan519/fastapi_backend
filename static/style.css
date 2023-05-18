@@ -1,9 +1,10 @@
-body {}
-
-.container {
-    margin: -2;
-    padding: 0;
+body {
+    background-color: rgb(204, 106, 9);
+    color: red;
+    border: 2 red;
 }
+
+
 
 img {
     width: 30px;
@@ -13,10 +14,6 @@ img {
 .image {
     width: 30px;
     height: 30px;
-}
-
-nav {
-    width: 100%;
 }
 
 .details {
@@ -30,7 +27,6 @@ nav {
 }
 
 .card-body {
-
     color: red;
 }
 

@@ -10,7 +10,8 @@ jinja2
 aiofiles
 #for database   #new
 sqlalchemy         
-
+# for migrations
+alembic
 #for loading environment variables  #new
 python-dotenv
 mysql-connector-python
