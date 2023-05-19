@@ -4,7 +4,9 @@ body {
     border: 2 red;
 }
 
-
+.nav {
+    margin: 20px;
+}
 
 img {
     width: 30px;
