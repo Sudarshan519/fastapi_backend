@@ -20,14 +20,15 @@ from schemas.jobs import JobCreate
 from db.models.users import User  
 from apis.v1.route_login import get_current_user_from_token
 from db.repository.jobs import create_new_job
+from webapps.utils import auth_required
 
 templates=Jinja2Templates(directory='templates')
 router =APIRouter(include_in_schema=False)
 
 @router.get("/")
+# @auth_required
 async def home(request: Request, db: Session = Depends(get_db),msg:str = None):   #new
     jobs = list_jobs(db=db)
-    print(request.cookies)
     cookie_exist=True if request.cookies.get('name') is not None else False
     return templates.TemplateResponse(
         "general_pages/homepage.html", {"request": request, "jobs": jobs,"msg":msg,"name": "Welcome "+request.cookies.get('name')} if cookie_exist else {"request": request, "jobs": jobs,"msg":msg,}  #new
@@ -35,7 +36,8 @@ async def home(request: Request, db: Session = Depends(get_db),msg:str = None): 
 
 
 
-@router.get("/details/{id}")             #new
+@router.get("/details/{id}")   
+@auth_required          #new
 def job_detail(id:int,request: Request,db:Session = Depends(get_db)): 
     job = retreive_job(id=id, db=db)
     
@@ -43,7 +45,7 @@ def job_detail(id:int,request: Request,db:Session = Depends(get_db)):
     
     cookie_exist=True if request.cookies.get('name') is not None else False
     return templates.TemplateResponse(
-"jobs/detail.html", {"request": request,"job":job,"name": "Welcome "+request.cookies.get('name')} if cookie_exist else {"request": request, "job":job }
+    "jobs/detail.html", {"request": request,"job":job,"name": "Welcome "+request.cookies.get('name')} if cookie_exist else {"request": request, "job":job }
     )
 
 

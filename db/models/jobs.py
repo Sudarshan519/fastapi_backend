@@ -17,7 +17,7 @@ class Job(Base):
     seats=Column(Integer,default=3)
     salary=Column(String(128),default="")
     owner = relationship("User",back_populates="jobs")
-
+    # applications=relationship('JobApplication',back_populates='jobs')
 
 class JobApplication(Base):
     id = Column(Integer,primary_key = True, index=True)
@@ -27,31 +27,31 @@ class JobApplication(Base):
     city = Column(String(50),nullable= False)
     email= Column(String(50),nullable= False)
     phone = Column(String(50),nullable= False)
-    applicant=relationship("User",back_populates="jobs")
     job_id=Column(Integer,ForeignKey("job.id"),default=1)
-    job=relationship("Job",back_populates="application")
-    status=Column(String(50),default="")
+#     # job=relationship("Job",back_populates="applications")
+    # applicant=relationship("User",back_populates="jobs")
+#     status=Column(String(50),default="")
 
 class Interview(Base):
     id = Column(Integer,primary_key = True, index=True)
     title = Column(String(50),nullable= False)
     date=Column(Date)
 
-class Education(Base):
-    id = Column(Integer,primary_key = True, index=True)
-    title = Column(String(50),nullable= False)
-    desc = Column(String(256),nullable= False)
-    start_date=Column(Date)
-    end_date=Column(Date)
-    user_id= Column(Integer,ForeignKey("user.id",),default=1)
-    user=relationship("User",back_populates="education")
+# class Education(Base):
+#     id = Column(Integer,primary_key = True, index=True)
+#     title = Column(String(50),nullable= False)
+#     desc = Column(String(256),nullable= False)
+#     start_date=Column(Date)
+#     end_date=Column(Date)
+#     user_id= Column(Integer,ForeignKey("user.id",),default=1)
+#     user=relationship("User",back_populates="education")
 
-class Achievements(Base):
-    id = Column(Integer,primary_key = True, index=True)
-    title = Column(String(50),nullable= False)
-    desc = Column(String(256),nullable= False)
+# class Achievements(Base):
+#     id = Column(Integer,primary_key = True, index=True)
+#     title = Column(String(50),nullable= False)
+#     desc = Column(String(256),nullable= False)
 
-class Skills(Base):
-    id = Column(Integer,primary_key = True, index=True)
-    title = Column(String(50),nullable= False)
-    desc = Column(String(256),nullable= False)
+# class Skills(Base):
+#     id = Column(Integer,primary_key = True, index=True)
+#     title = Column(String(50),nullable= False)
+#     desc = Column(String(256),nullable= False)
