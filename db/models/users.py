@@ -20,7 +20,8 @@ class User(Base):
     is_active = Column(Boolean(),default=True)
     is_superuser = Column(Boolean(),default=False)
     jobs = relationship("Job",back_populates="owner")
-    
+    jobapplication=relationship("JobApplication",back_populates="applicant")
+    interview=relationship("Interview",back_populates="applicant")
     # company = relationship("Company",back_populates="company_owner")  
 
 # class Employee(User):

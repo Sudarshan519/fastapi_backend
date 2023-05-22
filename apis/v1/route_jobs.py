@@ -1,12 +1,15 @@
 from fastapi import APIRouter, Request
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
-from typing import List, Optional        #new
+from typing import List, Optional
+from db.models.jobs import JobApplication
+from db.repository.jobs import add_application
+from schemas.job_application import JobApplicationCreate        #new
 from db.session import get_db
 from db.models.jobs import Job
 from db.models.users import User
 from schemas.jobs import JobCreate,ShowJob
-from db.repository.jobs import create_new_job,retreive_job ,list_jobs, search_job,update_job_by_id  #new #new import retrieve_job
+from db.repository.jobs import create_new_job,retreive_job ,list_jobs, search_job,update_job_by_id,update_application_by_id  #new #new import retrieve_job
 from apis.v1.route_login import get_current_user_from_token  #new
 
 router = APIRouter()
@@ -76,3 +79,20 @@ def autocomplete(term: Optional[str] = None, db: Session = Depends(get_db)):
     for job in jobs:
         job_titles.append(job.title)
     return job_titles
+
+
+
+@router.get('/interviews',tags=['Interview'])
+def all_interview(db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
+    return[]
+
+@router.post('/post-application/')
+def post_application(application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
+    application=add_application(db=db,application=application, )
+    return application
+
+
+@router.post('/accept-application')
+def accept_application(application_id:int,application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
+    application=update_application_by_id(id=application_id,application=application,db=db)
+    return application

@@ -1,0 +1,49 @@
+{% extends "shared/base.html" %}
+
+{% block homeActive%}
+active
+{% endblock %}
+{% block content %}
+
+Job Applications
+<br>
+
+<table>
+
+    <tr>
+        <th>SN0</th>
+        <th>Contact</th>
+        <th>Email</th>
+        <th>User</th>
+        <th>Actions</th>
+    </tr>
+
+
+    {% for application in applications%}
+    <tr>
+        <th>
+            {{application.id}}
+        </th>
+        <th>
+            {{application.phone}}
+
+        </th>
+        <th>
+            {{application.email}}
+        </th>
+        <th>
+            {{application.applicant.username}}
+        </th>
+        <th>
+            <button>Approve</button>
+
+            <button>Reject</button>
+            <button>Request a Interview</button>
+        </th>
+
+    </tr>
+    {%endfor%}<br>
+
+</table>
+
+{% endblock %}

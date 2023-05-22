@@ -3,9 +3,10 @@ from fastapi import APIRouter
 from fastapi import Request,Depends,responses,status
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
+from db.repository.jobs import all_applications
 from db.repository.jobs import delete_job_by_id 
 
-from db.repository.jobs import list_jobs, search_job,filter_jobs 
+from db.repository.jobs import list_jobs, search_job,filter_jobs ,all_interviews
 from db.repository.users import create_new_user
 from db.session import get_db
 from db.repository.jobs import retreive_job
@@ -123,4 +124,20 @@ def search(
     jobs = search_job(query, db=db)
     return templates.TemplateResponse(
         "general_pages/homepage.html", {"request": request, "jobs": jobs}
+    )
+
+
+@router.get("/applications/")
+def allAplication(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
+    applications=all_applications(db=db)
+    return templates.TemplateResponse(
+        "jobs/applications.html", {"request": request, "applications": applications}
+    )
+
+
+@router.get("/interviews/")
+def allAplication(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
+    applications=all_interviews(db=db)
+    return templates.TemplateResponse(
+        "jobs/interview.html", {"request": request, "applications": applications}
     )

@@ -47,7 +47,7 @@ nav {
 
 .navbar {
     background-color: #ebeeef;
-    height: 100px;
+    height: 60px;
     font-size: large;
     color: black;
 }
@@ -71,8 +71,11 @@ nav {
 .card-body {
     border-radius: 5%;
     border: #7c127c;
-    background-color: rgb(11, 236, 161);
-    color: rgb(255, 255, 255);
+    text-decoration: none;
+    /* background-color: rgb(161, 176, 168);
+     */
+    background-color: #ebeeef;
+    /* color: rgb(191, 45, 45); */
     transition: 1s;
 }
 
@@ -85,9 +88,9 @@ nav {
 
 .card-body:hover,
 .card:hover {
-    border-radius: 10%;
+    border-radius: 3%;
     transform: 4px -5px;
-    background-color: aqua;
+    /* background-color: rgb(74, 43, 165); */
     box-shadow: 5px 5px #888888;
     color: black;
 }
@@ -114,4 +117,58 @@ footer a {
     color: rgb(141, 136, 136);
     text-decoration: none;
     margin-right: 20px;
+}
+
+
+#mydiv {
+    position: absolute;
+    z-index: 9;
+    background-color: #f1f1f1;
+    border: 1px solid #d3d3d3;
+    text-align: center;
+    bottom: 10px;
+    height: 200px;
+    width: 200px;
+    border-radius: 10px;
+    right: 10px;
+}
+
+#mydivheader {
+    padding: 10px;
+
+    cursor: move;
+    z-index: 10;
+    background-color: #2196F3;
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+}
+
+
+
+.btn.btn-primary {
+    width: 100%;
+}
+
+.contact {
+    height: 100px;
+}
+
+
+
+/* table */
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
 }

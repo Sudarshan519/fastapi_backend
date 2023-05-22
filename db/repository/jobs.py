@@ -1,9 +1,11 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from db.models.jobs import JobApplication
 from db.session import get_db
 
 from schemas.jobs import JobCreate
-from db.models.jobs import Job
+from db.models.jobs import Job,Interview
+
 
 
 def create_new_job(job: JobCreate,db: Session,owner_id:int):
@@ -57,3 +59,28 @@ def search_job(query: str, db: Session):
 #     existing_job.update(job.__dict__)
 #     db.commit()
 #     return 1
+
+def all_applications(db:Session):
+    applications=db.query(JobApplication).all()
+ 
+    return applications
+
+def all_interviews(db:Session):
+    interviews=db.query(Interview).all()
+    return interviews
+
+def add_application(db:Session,application:JobApplication,owner_id:int=None):
+    print(application )
+    create_application= JobApplication(**application.dict(),applicant_id=owner_id)
+    db.add(create_application)
+    db.commit()
+    db.refresh(create_application)
+    return create_application
+
+
+def update_application_by_id(id:int,db:Session,application:JobApplication,owner_id:int=None):
+    existing_application= db.query(JobApplication).filter(JobApplication.id == id)
+    existing_application.update(application.__dict__)
+    db.commit()
+    db.refresh(existing_application)
+    return existing_application

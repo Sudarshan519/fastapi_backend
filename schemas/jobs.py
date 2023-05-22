@@ -2,6 +2,8 @@ from typing import Optional
 from pydantic import BaseModel
 from datetime import date,datetime
 
+from schemas.users import ShowUser
+
 
 #shared properties
 class JobBase(BaseModel):
@@ -29,6 +31,8 @@ class ShowJob(JobBase):
     location : str 
     date_posted : date
     description : Optional[str]
-
+    published_by:ShowUser
     class Config():  #to convert non dict obj to json
         orm_mode = True
+
+ 

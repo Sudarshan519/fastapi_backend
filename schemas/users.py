@@ -7,6 +7,7 @@ class UserCreate(BaseModel):
     username: str
     email : EmailStr
     password : str
+    is_employer:Optional[bool]
 
 
 class ShowUser(BaseModel):   #new
