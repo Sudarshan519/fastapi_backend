@@ -3,10 +3,11 @@ from fastapi import APIRouter
 from fastapi import Request,Depends,responses,status
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
+from webapps.jobs.forms import InterviewCreateForm
 from db.repository.jobs import all_applications
 from db.repository.jobs import delete_job_by_id 
 
-from db.repository.jobs import list_jobs, search_job,filter_jobs ,all_interviews
+from db.repository.jobs import list_jobs, search_job,filter_jobs ,all_interviews,add_interviews
 from db.repository.users import create_new_user
 from db.session import get_db
 from db.repository.jobs import retreive_job
@@ -17,6 +18,7 @@ from fastapi.security.utils import get_authorization_scheme_param
 
 from webapps.jobs.forms import JobCreateForm
 from schemas.jobs import JobCreate
+from schemas.interviews import InterviewCreate
 
 from db.models.users import User  
 from apis.v1.route_login import get_current_user_from_token
@@ -79,13 +81,12 @@ async def create_job(request: Request, db: Session = Depends(get_db) ):
             print(token)
             current_user: User = get_current_user_from_token(token=param, db=db)
             # print(current_user)
-            job = JobCreate(**form.__dict__)
+            job = InterviewCreate(**form.__dict__)
             job = create_new_job(job=job, db=db, owner_id=current_user.id)
             return responses.RedirectResponse(
                 f"/details/{job.id}", status_code=status.HTTP_302_FOUND
             )
         except Exception as e:
-            print(e)
             form.__dict__.get("errors").append(
                 "You might not be logged in, In case problem persists please contact us."
             )
@@ -128,6 +129,7 @@ def search(
 
 
 @router.get("/applications/")
+@auth_required   
 def allAplication(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
     applications=all_applications(db=db)
     return templates.TemplateResponse(
@@ -136,8 +138,40 @@ def allAplication(request: Request, db: Session = Depends(get_db), query: Option
 
 
 @router.get("/interviews/")
+@auth_required   
 def allAplication(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
     applications=all_interviews(db=db)
     return templates.TemplateResponse(
         "jobs/interview.html", {"request": request, "applications": applications}
     )
+
+@router.get('/request-interview/{id}')
+@auth_required
+def request_interview(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
+    applications=all_interviews(db=db)
+    return templates.TemplateResponse(
+        "jobs/request_interview.html", {"request": request, "applications": applications}
+    )
+
+
+@router.post('/request-interview/{id}')
+# @auth_required
+async def schedule_interview(id:int, request: Request, db: Session = Depends(get_db), query: Optional[str] = None): 
+    form=InterviewCreateForm(request)
+    await form.load_data()
+
+    if form.is_valid():
+        try:
+            print(form.__dict__)
+            interview = InterviewCreate(**form.__dict__)
+            print(interview)
+    #         # job = create_new_job(job=job, db=db, owner_id=current_user.id)
+        except Exception as e:
+            print(e)
+            form.__dict__.get("errors").append(
+                "You might not be logged in, In case problem persists please contact us."
+            )
+            print(form.__dict__)
+            return templates.TemplateResponse("jobs/request_interview.html", form.__dict__)
+ 
+    return templates.TemplateResponse("jobs/request_interview.html", form.__dict__)

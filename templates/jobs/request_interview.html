@@ -1,0 +1,40 @@
+{% extends "shared/base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="text-danger font-weight-bold">
+            {% for error in errors %}
+            <li>{{error}}</li>
+            {% endfor %}
+        </div>
+    </div>
+    <h3>Interview</h3>
+
+    <form class="needs-validation" method="post"
+        style="padding:15px;border:rgb(221, 212, 212); border-width:1px;border-radius:3px; border-style:outset;">
+        <h3>Request Interview</h3>
+        <div class="form-row">
+
+
+            <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">Date</label>
+                <input type="date" class="form-control" id="date" name="date">
+                <div class="invalid-tooltip">
+                    Please provide a valid zip.
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">Time</label>
+                <input type="time" class="form-control" id="time" name="time">
+                <div class="invalid-tooltip">
+                    Please provide a valid zip.
+                </div>
+            </div>
+
+        </div>
+        <button class="btn btn-secondary" type="submit">Submit form</button>
+    </form>
+</div>
+{% endblock%}

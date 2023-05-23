@@ -1,12 +1,16 @@
 body {
-    margin: 20;
+
     padding: 0;
+    background-color: #ebeeef;
+
+
 }
 
 footer {
     width: 100%;
-    background: #ebeeef;
+    background: #256f83;
     padding: 25px 0;
+
     text-align: center;
     position: fixed;
     bottom: 0px;
@@ -14,13 +18,20 @@ footer {
 }
 
 .row {
-    padding: 10px;
-    margin: 5px;
+
+    /* padding: 10px;
+    margin: 5px; */
 }
 
 .container {
     margin: 0;
-    padding: 0;
+    padding: 10px;
+    position: inherit;
+
+    margin: 10px 10px 100px 10px;
+
+
+
 }
 
 img {
@@ -37,17 +48,24 @@ nav {
     /* margin-left: 20px; */
 
     top: 0;
-    color: #ebeeef;
-    width: 100%;
-    background-color: #ebeeef;
-    ;
+    position: sticky;
+    /* color: #ebeeef; */
+
+    /* background-color: #ebeeef; */
+
 
     /* height: 120px; */
+
 }
 
+
+
 .navbar {
-    background-color: #ebeeef;
-    height: 60px;
+    border-radius: 4px;
+    /* background-color: #ebeeef; */
+    background-color: white;
+    box-shadow: 1px 1px #c7bfbf;
+
     font-size: large;
     color: black;
 }
@@ -69,14 +87,21 @@ nav {
 
 .card,
 .card-body {
-    border-radius: 5%;
-    border: #7c127c;
+    padding: 10px;
+    border-radius: 0%;
+    margin: 10px;
+    /* border: #7c127c; */
     text-decoration: none;
-    /* background-color: rgb(161, 176, 168);
-     */
-    background-color: #ebeeef;
+    background-color: rgb(161, 176, 168);
+
+    /* background-color: #ebeeef; */
     /* color: rgb(191, 45, 45); */
     transition: 1s;
+    background-color: white;
+}
+
+.card.item {
+    border-radius: 3px;
 }
 
 /* .card-body {
@@ -86,8 +111,9 @@ nav {
     border: #7c127c;
 } */
 
-.card-body:hover,
+/* .card-body:hover, */
 .card:hover {
+    margin: 10px;
     border-radius: 3%;
     transform: 4px -5px;
     /* background-color: rgb(74, 43, 165); */
@@ -116,6 +142,7 @@ nav {
 footer a {
     color: rgb(141, 136, 136);
     text-decoration: none;
+    text-decoration-color: white;
     margin-right: 20px;
 }
 
@@ -146,7 +173,10 @@ footer a {
 
 
 .btn.btn-primary {
-    width: 100%;
+    /* width: 100%; */
+    color: #000;
+    background-color: white;
+    border-color: rgb(210, 198, 198);
 }
 
 .contact {
@@ -157,6 +187,7 @@ footer a {
 
 /* table */
 table {
+
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;

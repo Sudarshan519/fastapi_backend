@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean,Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean,Date,Time, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import Session
 from db.base_class import Base
@@ -36,14 +36,18 @@ class JobApplication(Base):
     date_posted=Column(Date)
 #     # job=relationship("Job",back_populates="applications")
     # applicant=relationship("User",back_populates="jobs")
-#     status=Column(String(50),default="")
+    status=Column(String(50),default="")
 
 class Interview(Base):
     id = Column(Integer,primary_key = True, index=True)
     title = Column(String(50),nullable= False)
     applicant_id= Column(Integer,ForeignKey("user.id",),default=1,nullable=False)
+
     applicant= relationship("User",back_populates="interview")
+    
+    job_id=Column(Integer,ForeignKey("jobapplication.id",))
     date=Column(Date)
+    time=Column(Time)
 
 # class Education(Base):
 #     id = Column(Integer,primary_key = True, index=True)

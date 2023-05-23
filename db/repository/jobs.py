@@ -29,6 +29,8 @@ def filter_jobs(db:Session,ownerId:int):
     jobs=db.query(Job).filter(Job.owner_id==ownerId)
     return jobs
 
+ 
+
 def update_job_by_id(id:int, job: JobCreate,db: Session,owner_id):
     existing_job = db.query(Job).filter(Job.id == id)
     if not existing_job.first():
@@ -61,12 +63,12 @@ def search_job(query: str, db: Session):
 #     return 1
 
 def all_applications(db:Session):
-    applications=db.query(JobApplication).all()
+    applications=db.query(JobApplication).filter(JobApplication.status=='') or []
  
     return applications
 
 def all_interviews(db:Session):
-    interviews=db.query(Interview).all()
+    interviews=db.query(Interview).all() 
     return interviews
 
 def add_application(db:Session,application:JobApplication,owner_id:int=None):
@@ -84,3 +86,11 @@ def update_application_by_id(id:int,db:Session,application:JobApplication,owner_
     db.commit()
     db.refresh(existing_application)
     return existing_application
+
+def add_interviews(interview:Interview,db:Session):
+    
+    interviews=Interview(**interview.dict())
+    db.add(interviews)
+    db.commit()
+    db.refresh(interviews)
+    return interviews

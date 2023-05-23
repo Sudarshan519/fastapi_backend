@@ -17,6 +17,35 @@
 
 
 <div class="container">
+  <h3>
+    Dashboard
+  </h3>
+  <div class="row">
+    {% with obj={"q12sdfs":""} ,title="Users" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}
+    {% with obj={"q12sdfs":""} ,title="Jobs" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}
+    {% with obj={"q12sdfs":""} ,title="Applications" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}
+    {% with obj={"q12sdfs":""} ,title="Interviews" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}{% with obj={"q12sdfs":""} ,title="Categories" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}{% with obj={"q12sdfs":""} ,title="Interviews" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}{% with obj={"q12sdfs":""} ,title="Interviews" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}{% with obj={"q12sdfs":""} ,title="Interviews" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}{% with obj={"q12sdfs":""} ,title="Interviews" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}{% with obj={"q12sdfs":""} ,title="Interviews" %}
+    {% include "components/custom_card.html" %}
+    {% endwith %}
+  </div>
   <div class="row">
     <div class="col">
       <h1 class="display-0">All Jobs..</h1>
@@ -24,13 +53,14 @@
   </div>
   <div class="row">
     {% for job in jobs %}
-    <div class="col-lg-4 col-md-3 col-sm-10 mr-auto">
-      {% with obj=job %}
-      {% include "components/cards.html" %}
-      {% endwith %}
+    <!-- <div class="col-lg-4 col-md-4  column-sm-2  mr-auto"> -->
 
-      {% if loop.index %3 %}
-    </div>
+    {% with obj=job %}
+    {% include "components/cards.html" %}
+    {% endwith %}
+
+    {% if loop.index %3 %}
+    <!-- </div> -->
     {% else %}
   </div>
 </div><br>

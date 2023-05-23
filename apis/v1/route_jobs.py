@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
-from typing import List, Optional
+from typing import List, Optional 
 from db.models.jobs import JobApplication
 from db.repository.jobs import add_application
 from schemas.job_application import JobApplicationCreate        #new
@@ -88,11 +88,15 @@ def all_interview(db: Session = Depends(get_db),current_user: User = Depends(get
 
 @router.post('/post-application/')
 def post_application(application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
-    application=add_application(db=db,application=application, )
-    return application
+    job=retreive_job(id= application.job_id,db=db)
+    if not job: 
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Job with {application.job_id} does not exist")
+    else:
+        application=add_application(db=db,application=application )
+        return application
 
 
-@router.post('/accept-application')
+@router.post('/request-interview')
 def accept_application(application_id:int,application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     application=update_application_by_id(id=application_id,application=application,db=db)
     return application

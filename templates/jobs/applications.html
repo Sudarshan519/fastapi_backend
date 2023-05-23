@@ -4,46 +4,49 @@
 active
 {% endblock %}
 {% block content %}
+<div class="container">
 
-Job Applications
-<br>
-
-<table>
-
-    <tr>
-        <th>SN0</th>
-        <th>Contact</th>
-        <th>Email</th>
-        <th>User</th>
-        <th>Actions</th>
-    </tr>
+    <h3>All Applications</h3>
 
 
-    {% for application in applications%}
-    <tr>
-        <th>
-            {{application.id}}
-        </th>
-        <th>
-            {{application.phone}}
+    <table>
 
-        </th>
-        <th>
-            {{application.email}}
-        </th>
-        <th>
-            {{application.applicant.username}}
-        </th>
-        <th>
-            <button>Approve</button>
+        <tr>
+            <th>SNo.</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>User</th>
+            <th>Actions</th>
+        </tr>
 
-            <button>Reject</button>
-            <button>Request a Interview</button>
-        </th>
 
-    </tr>
-    {%endfor%}<br>
+        {% for application in applications%}
+        <tr>
+            <th>
+                {{application.id}}
+            </th>
+            <th>
+                {{application.phone}}
 
-</table>
+            </th>
+            <th>
+                {{application.email}}
+            </th>
+            <th>
+                {{application.applicant.username}}
+            </th>
+            <th>
+                <!-- <button class="btn btn-primary">Approve</button> -->
+
+                <button class="btn btn-danger">Reject</button>
+                <a class="btn btn-primary" style="color:green" href="/request-interview/{{application.id}}">Request a
+                    Interview</a>
+            </th>
+
+        </tr>
+        {%endfor%}<br>
+
+    </table>
+</div>
 
 {% endblock %}
