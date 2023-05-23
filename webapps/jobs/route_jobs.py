@@ -7,7 +7,7 @@ from webapps.jobs.forms import InterviewCreateForm
 from db.repository.jobs import all_applications
 from db.repository.jobs import delete_job_by_id 
 
-from db.repository.jobs import list_jobs, search_job,filter_jobs ,all_interviews,add_interviews
+from db.repository.jobs import list_jobs, search_job,filter_jobs ,all_interviews,add_interviews,retrive_application,update_application_by_id
 from db.repository.users import create_new_user
 from db.session import get_db
 from db.repository.jobs import retreive_job
@@ -77,8 +77,7 @@ async def create_job(request: Request, db: Session = Depends(get_db) ):
             print(token)
             scheme, param = get_authorization_scheme_param(
                 token
-            )  # scheme will hold "Bearer" and param will hold actual token value
-            print(token)
+            )  
             current_user: User = get_current_user_from_token(token=param, db=db)
             # print(current_user)
             job = InterviewCreate(**form.__dict__)
@@ -142,7 +141,7 @@ def allAplication(request: Request, db: Session = Depends(get_db), query: Option
 def allAplication(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
     applications=all_interviews(db=db)
     return templates.TemplateResponse(
-        "jobs/interview.html", {"request": request, "applications": applications}
+        "jobs/interview.html", {"request": request, "interviews": applications}
     )
 
 @router.get('/request-interview/{id}')
@@ -154,24 +153,33 @@ def request_interview(request: Request, db: Session = Depends(get_db), query: Op
     )
 
 
-@router.post('/request-interview/{id}')
-# @auth_required
-async def schedule_interview(id:int, request: Request, db: Session = Depends(get_db), query: Optional[str] = None): 
+# @router.post('/reject-applicatoin')
+# async def reject_interview(int:id,request: Request, db: Session = Depends(get_db), query: Optional[str] = None,current_user: User = Depends(get_current_user_from_token)):
+#     return "failed"
+
+@router.post('/request-interview/{id}') 
+async def schedule_interview(id:int, request: Request, db: Session = Depends(get_db), query: Optional[str] = None,current_user: User = Depends(get_current_user_from_token)):
     form=InterviewCreateForm(request)
+    
     await form.load_data()
 
     if form.is_valid():
         try:
             print(form.__dict__)
-            interview = InterviewCreate(**form.__dict__)
-            print(interview)
-    #         # job = create_new_job(job=job, db=db, owner_id=current_user.id)
+            application=retrive_application(id=id,db=db)
+            print(application)
+            interview_data = InterviewCreate(status="",job_id=application.job_id,applicant_id=application.applicant_id,title="Interview scheduled.", **form.__dict__)
+            
+            application=update_application_by_id(id=application.id,db=db,status="on_interview")
+            interview=add_interviews(interview=interview_data, db=db) 
+            form.__dict__.get("errors").append('Successfully added interview.')
+            return templates.TemplateResponse("jobs/request_interview.html",form.__dict__ )
         except Exception as e:
             print(e)
+            db.rollback()
             form.__dict__.get("errors").append(
                 "You might not be logged in, In case problem persists please contact us."
-            )
-            print(form.__dict__)
+            ) 
             return templates.TemplateResponse("jobs/request_interview.html", form.__dict__)
  
     return templates.TemplateResponse("jobs/request_interview.html", form.__dict__)

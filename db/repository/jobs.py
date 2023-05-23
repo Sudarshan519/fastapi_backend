@@ -63,12 +63,13 @@ def search_job(query: str, db: Session):
 #     return 1
 
 def all_applications(db:Session):
-    applications=db.query(JobApplication).filter(JobApplication.status=='') or []
- 
-    return applications
+    applications=db.query(JobApplication).filter(JobApplication.status=='')
+    print(applications)
+    return applications  
 
 def all_interviews(db:Session):
     interviews=db.query(Interview).all() 
+    print(interviews)
     return interviews
 
 def add_application(db:Session,application:JobApplication,owner_id:int=None):
@@ -79,13 +80,23 @@ def add_application(db:Session,application:JobApplication,owner_id:int=None):
     db.refresh(create_application)
     return create_application
 
+def retrive_application(id:int,db:Session):
+    return db.query(JobApplication).filter(JobApplication.id == id).first()
 
-def update_application_by_id(id:int,db:Session,application:JobApplication,owner_id:int=None):
+
+def update_application_by_id(id:int,status:str,db:Session):
     existing_application= db.query(JobApplication).filter(JobApplication.id == id)
-    existing_application.update(application.__dict__)
-    db.commit()
-    db.refresh(existing_application)
-    return existing_application
+    if not existing_application.first():
+        return None 
+    else:
+        application=existing_application.first().__dict__.copy()
+        del application['_sa_instance_state']
+
+        application.update(status=status)
+        print(application)
+        existing_application.update(application)
+        db.commit()  
+    return application
 
 def add_interviews(interview:Interview,db:Session):
     
@@ -94,3 +105,17 @@ def add_interviews(interview:Interview,db:Session):
     db.commit()
     db.refresh(interviews)
     return interviews
+
+
+class SetGetState:
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        try:
+            class_name = '_' + self.__class__.__name__ + '__'
+            new_items = {key:value for key, value in state.items() if class_name not in key}
+            return new_items
+        except KeyError:
+            pass
+        return state
+    
+

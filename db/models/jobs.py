@@ -48,6 +48,7 @@ class Interview(Base):
     job_id=Column(Integer,ForeignKey("jobapplication.id",))
     date=Column(Date)
     time=Column(Time)
+    status=Column(String(50),nullable= False)
 
 # class Education(Base):
 #     id = Column(Integer,primary_key = True, index=True)

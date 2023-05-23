@@ -2,14 +2,13 @@
 
 {% block content %}
 <div class="container">
-
-    <div class="row">
-        <div class="text-danger font-weight-bold">
+ 
             {% for error in errors %}
-            <li>{{error}}</li>
+            {% with msg=error %}
+    {% include "components/alerts.html" %}
+    {% endwith %}
             {% endfor %}
-        </div>
-    </div>
+         
     <h3>Interview</h3>
 
     <form class="needs-validation" method="post"

@@ -18,11 +18,13 @@ class InterviewBase(BaseModel):
 #this will be used to validate data while creating a Job
 class InterviewCreate(InterviewBase):
  
-    id:int
+    # id:int
     title:Optional[str]
     date:date
     time:time
     applicant_id:int
+    job_id:int
+    status:str
 
 
 

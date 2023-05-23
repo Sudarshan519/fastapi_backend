@@ -6,9 +6,9 @@ active
 {% block content %}
 <div class="container">
 
-    <h3>All Applications</h3>
-
-
+    <h3>All Applications</h3> 
+    {{applications}}
+    {% if applications|length > 0  %}
     <table>
 
         <tr>
@@ -16,6 +16,7 @@ active
             <th>Contact</th>
             <th>Email</th>
             <th>User</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
 
@@ -36,6 +37,9 @@ active
                 {{application.applicant.username}}
             </th>
             <th>
+                {{application.status}}
+            </th>
+            <th>
                 <!-- <button class="btn btn-primary">Approve</button> -->
 
                 <button class="btn btn-danger">Reject</button>
@@ -47,6 +51,8 @@ active
         {%endfor%}<br>
 
     </table>
+    {%endif%}
+
 </div>
 
 {% endblock %}

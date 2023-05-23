@@ -23,3 +23,12 @@ def get_db() -> Generator:   #new
         yield db
     finally:
         db.close()
+
+
+async def commit_rollback():
+    try:
+        await get_db.commit()
+    except Exception:
+        await get_db.rollback()
+        raise
+db=SessionLocal()

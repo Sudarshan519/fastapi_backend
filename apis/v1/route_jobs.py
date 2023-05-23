@@ -1,9 +1,13 @@
-from fastapi import APIRouter, Request
+import math
+from fastapi import APIRouter, Query, Request
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
 from typing import List, Optional 
 from db.models.jobs import JobApplication
+from db.repository.application import ApplicationRepository
 from db.repository.jobs import add_application
+from schemas.base import PageResponse, ResponseSchema
 from schemas.job_application import JobApplicationCreate        #new
 from db.session import get_db
 from db.models.jobs import Job
@@ -100,3 +104,34 @@ def post_application(application: JobApplicationCreate,db: Session = Depends(get
 def accept_application(application_id:int,application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     application=update_application_by_id(id=application_id,application=application,db=db)
     return application
+from sqlalchemy.sql import select
+@router.get('/applications/',response_model=ResponseSchema, response_model_exclude_none=True)
+async def all_applications( page: int = 1,
+        limit: int = 10,
+        columns: str = Query(None, alias="columns"),
+        sort: str = Query(None, alias="sort"),
+        filter: str = Query(None, alias="filter"),db:Session=Depends(get_db),):
+    # all=await ApplicationRepository.get_all()
+
+        count = db.query(func.count(JobApplication.id)).scalar()
+        print(count)
+        
+        # count query
+        # coun/t_query = select(func.count(1)).select_from(qr)
+        offset_page = page - 1
+        # pagination
+        pages = (db.offset(offset_page * limit).limit(limit))
+
+        # # total record
+        # total_record = (await db.execute(count_query)).scalar() or 0
+
+        # # total page
+        # total_page = math.ceil(total_record / limit)
+        # all=qr
+        all= db.query(JobApplication).all()
+        pageres=PageResponse( page_number=page,
+            page_size=limit,
+            total_pages=1,
+            total_record=2,
+            content=all)
+        return ResponseSchema(detail='Success fetching applications.',result=pageres)
