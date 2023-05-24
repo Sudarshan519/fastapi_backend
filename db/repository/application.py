@@ -1,28 +1,28 @@
 import math
-from fastapi import Depends
+from fastapi import Depends 
 
 from sqlalchemy import update, delete, or_, text, func, column
 from sqlalchemy.sql import select
 from sqlalchemy.orm import Session
-from db.session import db,get_db, commit_rollback
+from db.session import  get_db, commit_rollback
 from db.models.jobs import JobApplication
 from schemas.base import PageResponse
 class ApplicationRepository:
     @staticmethod
-    async def get_all(
+    async def get_all( db:Session,
         page: int = 1,
         limit: int = 10,
+        
         columns: str = None,
         sort: str = None,
-        filter: str = None, 
-        ):
-        # query=select(from_obj=JobApplication,columns="*")
-    
+        filter: str = None,  
+        ): 
+        query=select("*")
+        # query=(JobApplication).all()
         # # select column dynamically
-        # if columns is not None and columns != "all":
-        #     # we need column format data like this --> [column(id),column(name),column(sex)...]
-
-        #     query = select(from_obj=JobApplication, columns=convert_columns(columns))
+        if columns is not None and columns != "all":
+            # we need column format data like this --> [column(id),column(name),column(sex)...]
+            query = select( columns=convert_columns(columns))
 
         # # select filter dynamically
         # if filter is not None and filter != "null":
@@ -53,26 +53,33 @@ class ApplicationRepository:
 
         # # count query
         # count_query = select(func.count(1)).select_from(query)
-
-        # offset_page = page - 1
+        count_query=func.count("*")
+        offset_page = page - 1
         # # pagination
         # query = (query.offset(offset_page * limit).limit(limit))
-
+        # query=query[1:3]
+        result=db.query("*").select_from(JobApplication).all()#[offset_page:limit]
+        print(result)
         # # total record
+        total_record =(  db.query(func.count("*")).select_from(JobApplication).scalar())
         # total_record = (await db.execute(count_query)).scalar() or 0
 
         # # total page
-        # total_page = math.ceil(total_record / limit)
-        
+        total_page = math.ceil(total_record / limit)
+        print(total_page)
         # result
-        result = db.query(JobApplication).all()
-        return PageResponse(
+
+
+        print(total_record)
+        # return result
+        page= PageResponse(
             page_number=page,
             page_size=limit,
-            total_pages=5,
-            total_record=5,
+            total_pages=total_page,
+            total_record=total_record,
             content=result
         )
+        return page
     
 
 

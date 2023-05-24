@@ -2,8 +2,11 @@ from typing import Optional, Union
 from fastapi import APIRouter
 from fastapi import Request,Depends,responses,status
 from fastapi.templating import Jinja2Templates
+from sqlalchemy import func
 from sqlalchemy.orm import Session
+from db.models.jobs import JobApplication
 from db.repository.application import ApplicationRepository
+from schemas.base import ResponseSchema
 from webapps.jobs.forms import InterviewCreateForm
 from db.repository.jobs import all_applications
 from db.repository.jobs import delete_job_by_id 
@@ -121,11 +124,12 @@ def search(
     )
 
 
-@router.get("/applications/")
+@router.get("/applications/",response_model=ResponseSchema, response_model_exclude_none=True)
 @auth_required   
 def allAplication(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
-    applications= all_applications(db=db)
-    
+    applications= ApplicationRepository.get_all(db) #all_applications(db=db)
+    print(applications)
+    # applications=db.query(func.count("*")).select_from(JobApplication).scalar()
     # response={"request":request}
     # print(applications)
     # if(applications is not None):
@@ -133,7 +137,7 @@ def allAplication(request: Request, db: Session = Depends(get_db), query: Option
     # return templates.TemplateResponse(
     #     "jobs/applications.html",  
     # )
-    return applications
+    return ResponseSchema(detail="",result=applications)
 
 
 @router.get("/interviews/")

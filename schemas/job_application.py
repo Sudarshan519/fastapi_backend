@@ -23,6 +23,8 @@ class JobApplicationBase(BaseModel):
     address : Optional[str] = None
     date_posted : Optional[date] = datetime.now().date()
     job_id:int
+    class Config():  #to convert non dict obj to json
+        orm_mode = True
 
 #this will be used to validate data while creating a Job
 class JobApplicationCreate(JobApplicationBase):
