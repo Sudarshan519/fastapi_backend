@@ -15,14 +15,12 @@ from db.models.users import User
 from schemas.jobs import JobCreate,ShowJob
 from db.repository.jobs import create_new_job,retreive_job ,list_jobs, search_job,update_job_by_id,update_application_by_id  #new #new import retrieve_job
 from apis.v1.route_login import get_current_user_from_token  #new
-
+from fastapi_pagination import LimitOffsetPage, add_pagination, paginate
 router = APIRouter()
 
 
 @router.post("/create-job/",response_model=ShowJob)
 def create_job(job: JobCreate,db: Session = Depends(get_db),current_user:User = Depends(get_current_user_from_token)):  #new dependency here):
-    # current_user = 1
-    print(current_user)
     job = create_new_job(job=job,db=db,owner_id=current_user.id)
     return job
 
@@ -36,7 +34,7 @@ def read_job(id:int,db:Session = Depends(get_db)):
     return job
 
 
-@router.get("/all",response_model=List[ShowJob]) #new
+@router.get("/all",response_model=LimitOffsetPage[List[ShowJob]]) #new
 def read_jobs(db:Session = Depends(get_db)):
     jobs = list_jobs(db=db)
     return jobs or [] 

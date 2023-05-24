@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="container">
- 
-            {% for error in errors %}
-            {% with msg=error %}
+
+    {% for error in errors %}
+    {% with msg=error %}
     {% include "components/alerts.html" %}
     {% endwith %}
-            {% endfor %}
-         
+    {% endfor %}
+
     <h3>Interview</h3>
 
     <form class="needs-validation" method="post"
@@ -32,8 +32,31 @@
                 </div>
             </div>
 
+
+
+            <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">Select Status</label>
+                <select name="statuses" id="status">
+                    <option class="dropdown-item" type="button">Interview Scheduled</button>
+                    <option class="dropdown-item" type="button">Interview Paused</button>
+                    <option class="dropdown-item" type="button">Interview Canceled</button>
+                    <option class="dropdown-item" type="button">Interview Completed</button>
+                </select>
+                <div class="invalid-tooltip">
+                    Please provide a valid zip.
+                </div>
+            </div>
+
+
+
+
+
+            <br>
+
         </div>
-        <button class="btn btn-secondary" type="submit">Submit form</button>
+        <button class="btn btn-danger" type="submit">Submit form</button>
     </form>
+
+
 </div>
 {% endblock%}
