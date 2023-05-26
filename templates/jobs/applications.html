@@ -1,15 +1,16 @@
 {% extends "shared/base.html" %}
 
-{% block homeActive%}
+{% block homeActive %}
 active
 {% endblock %}
 {% block content %}
 <div class="container">
-
+    <!-- {{ page_apps }} -->
     <h3>All Applications</h3>
 
-    {% if applications|length > 0 %}
-    <table>
+    {% if page_apps.content|length > 0 %}
+
+    <table id="applicationtable">
 
         <tr>
             <th>SNo.</th>
@@ -18,26 +19,27 @@ active
             <th>User</th>
             <th>Status</th>
             <th>Actions</th>
+
         </tr>
 
 
-        {% for application in applications%}
+        {% for application in page_apps.content%}
         <tr>
             <th>
-                {{application.id}}
+                {{ application.id }}
             </th>
             <th>
-                {{application.phone}}
+                {{ application.phone }}
 
             </th>
             <th>
-                {{application.email}}
+                {{ application.email }}
             </th>
             <th>
-                {{application.applicant.username}}
+
             </th>
             <th>
-                {{application.status}}
+                {{ application.status }}
             </th>
             <th>
                 <!-- <button class="btn btn-primary">Approve</button> -->
@@ -45,14 +47,115 @@ active
                 <button class="btn btn-danger">Reject</button>
                 <a class="btn btn-primary" style="color:green" href="/request-interview/{{application.id}}">Request a
                     Interview</a>
+                <a class="btn btn-primary" style="color:green" href="#" onclick="insertRow()">
+                    Test inert row</a>
             </th>
 
         </tr>
-        {%endfor%}<br>
+        {% endfor %}<br>
 
     </table>
-    {%endif%}
+
+    <div>{% if page_apps.page_number!=1 %}
+        <span> <a href="#" id="previous" onclick="pre()">
+                < {%endif%} </span>
+            </a>
+
+
+            {{page_apps.page_number}} / {{page_apps.total_pages}}
+
+            {% if page_apps.total_pages>page_apps.page_number %}
+            <a href="#" id="next" onclick="next()">
+                <span>
+                    >
+                </span></a>{%endif%}
+
+
+            <input class="#" name="query" id="test">
+            <a onclick="test()" id="limit" class="btn btn-secondary ">
+                Limit
+            </a>
+            <!-- {% if page_apps.total_pages > 1 %}
+        {% for i in range(3)%}
+
+        <a href="/applications/?page={{page_apps.page_number-i}}&limit=1">
+            {% if (page_apps.page_number-i)<page_apps.total_pages %} {{page_apps.page_number+i}} 
+        
+        </a>{%endif%}
+                {% endfor %}
+                {%endif%} -->
+            <!-- <span>2</span> <span>3</span> <span>...</span> -->
+            <!-- <span>{{page_apps.total_pages}}</span> -->
+    </div>
+    {% endif %}
 
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+let limit={{page_apps.page_size}}
+element=document.getElementById('test')
+element.value={{page_apps.page_size}}
+function pre(){
+console.log('work'+limit);
+element=document.getElementById('previous')
+<!-- element.href='/applications/?page={{page_apps.page_number-1}}&limit='+limit -->
+window.location.href = '/applications/?page={{page_apps.page_number-1}}&limit='+limit
+}
+
+function next(){
+console.log({{page_apps.page_number+1}});
+
+element=document.getElementById('next')
+<!-- element.href='/applications/?page={{page_apps.page_number+1}}&limit='+limit -->
+window.location.href='/applications/?page={{page_apps.page_number+1}}&limit='+limit;
+console.log({{page_apps.page_number+1}});
+
+}
+function test( ){
+
+console.log(limit);
+element=document.getElementById('test')
+limit=element.value
+limitpage=document.getElementById('limit')
+<!-- element.href='/applications/?page={{page_apps.page_number+1}}&limit='+limit -->
+window.location.href = '/applications/?page=1&limit='+limit
+limit=(element.value);
+
+
+}
+
+function deleteRow() {
+let table = document.getElementById("applicationtable");
+table.deleteRow(0)
+}
+function insertRow(){
+let table = document.getElementById("applicationtable");
+let row = table.insertRow(-1);
+// Create table cells
+let c1 = row.insertCell(0);
+let c2 = row.insertCell(1);
+let c3 = row.insertCell(2);
+let c4=row.insertCell(3)
+let c5=row.insertCell(4)
+let c6=row.insertCell(5)
+// Add data to c1 and c2
+console.log({{applications|length}});
+
+c1.innterText=45
+c2.innerText = 45
+c3.innerText = "Houston"
+c4.innerText = "Houston"
+c3.innerText = "Houston"
+// Append row to table body
+table.appendChild(row)
+}
+async function logJSONData() {
+const response = await fetch("http://127.0.0.1:8001/jobs/applications/?page=1&limit=10");
+const jsonData = await response.json();
+console.log(jsonData);
+}
+logJSONData();
 
 {% endblock %}

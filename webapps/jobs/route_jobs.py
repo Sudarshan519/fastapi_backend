@@ -28,7 +28,8 @@ from db.models.users import User
 from apis.v1.route_login import get_current_user_from_token
 from db.repository.jobs import create_new_job
 from webapps.utils import auth_required
-
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 templates=Jinja2Templates(directory='templates')
 router =APIRouter(include_in_schema=False)
 
@@ -123,21 +124,30 @@ def search(
         "general_pages/homepage.html", {"request": request, "jobs": jobs}
     )
 
-
+import json
 @router.get("/applications/",response_model=ResponseSchema, response_model_exclude_none=True)
-@auth_required   
-def allAplication(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
-    applications= ApplicationRepository.get_all(db) #all_applications(db=db)
-    print(applications)
+# @auth_required   
+async def allAplication( request: Request,page: int or None = None,limit:int or None=None, short: bool = False, db: Session = Depends(get_db), query: Optional[str] = None):
+    print(page)
+    print(limit)
+    page_apps=await ApplicationRepository.get_all(db,page or 1,limit or 1) 
+   
+    json_compatible_item_data = jsonable_encoder(page_apps)
+    # print(json_compatible_item_data)
+    content= JSONResponse(content=json_compatible_item_data)
+    # applications=all_applications(db=db)
+    # print(content)
     # applications=db.query(func.count("*")).select_from(JobApplication).scalar()
-    # response={"request":request}
+    response={"request":request}
+    
     # print(applications)
-    # if(applications is not None):
-    #     response['applications']=applications
-    # return templates.TemplateResponse(
-    #     "jobs/applications.html",  
-    # )
-    return ResponseSchema(detail="",result=applications)
+    if(page_apps is not None):
+        # response['applications']=applications
+        response['page_apps']= (json_compatible_item_data)
+    return templates.TemplateResponse(
+        "jobs/applications.html",  response
+    )
+ 
 
 
 @router.get("/interviews/")

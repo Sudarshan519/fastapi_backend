@@ -46,9 +46,6 @@
         crossorigin="anonymous"></script>
 
 
-    {% block scripts %}
-    {% endblock %}
-
 
     <footer>
 
@@ -70,6 +67,9 @@
     <script>
         const url = window.location.href;
 
+
+        {% block scripts %}
+        {% endblock %}
         if (url.includes('/applications')) {
             document.getElementById('applications').classList.toggle('active')
         }
@@ -83,7 +83,7 @@
         }
 
 
-       
+
         var getCookies = (function () {
             var pairs = document.cookie.split(";");
             var cookies = {};

@@ -59,14 +59,14 @@
     {% include "components/cards.html" %}
     {% endwith %}
 
-    {% if loop.index %3 %}
-    <!-- </div> -->
+    {% if loop.index %4 %}
+
     {% else %}
   </div>
-</div><br>
-<div class="row">
-  {% endif %}
-  {% endfor %}
-</div>
+  <br>
+  <div class="row">
+    {% endif %}
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

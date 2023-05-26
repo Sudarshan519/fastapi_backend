@@ -11,7 +11,7 @@ class ApplicationRepository:
     @staticmethod
     async def get_all( db:Session,
         page: int = 1,
-        limit: int = 10,
+        limit: int = 1,
         
         columns: str = None,
         sort: str = None,
@@ -58,10 +58,10 @@ class ApplicationRepository:
         # # pagination
         # query = (query.offset(offset_page * limit).limit(limit))
         # query=query[1:3]
-        result=db.query("*").select_from(JobApplication).all()#[offset_page:limit]
+        result=db.query("*").select_from(JobApplication) .offset(offset_page*limit).limit(limit).all()
         print(result)
         # # total record
-        total_record =(  db.query(func.count("*")).select_from(JobApplication).scalar())
+        total_record =( db.query(func.count("*")).select_from(JobApplication).scalar())
         # total_record = (await db.execute(count_query)).scalar() or 0
 
         # # total page

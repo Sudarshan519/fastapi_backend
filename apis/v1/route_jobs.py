@@ -4,7 +4,8 @@ from fastapi import APIRouter, Query, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
-from typing import List, Optional 
+from typing import List, Optional
+from db.repository.jobs import all_applications 
 from db.models.jobs import JobApplication
 from db.repository.application import ApplicationRepository
 from db.repository.jobs import add_application
@@ -105,14 +106,15 @@ def accept_application(application_id:int,application: JobApplicationCreate,db: 
     return application
 from sqlalchemy.sql import select
 @router.get('/applications/',response_model=ResponseSchema, response_model_exclude_none=True)
-async def all_applications( 
+async def applications( 
     page: int = 1,
         limit: int = 10,
         columns: str = Query(None, alias="columns"),
         sort: str = Query(None, alias="sort"),
         filter: str = Query(None, alias="filter"),db:Session=Depends(get_db),):
-        result= await ApplicationRepository.get_all(db)
-        print(all)
+        result= await ApplicationRepository.get_all(db,page,limit)
+ 
+        # result= all_applications(db) 
         # count = db.query(func.count(JobApplication.id)).scalar()
         # print(count)
         
@@ -135,4 +137,4 @@ async def all_applications(
         #     total_pages=1,
         #     total_record=2,
         #     content=all)
-        return ResponseSchema(detail='Success fetching applications.',result=json.dumps(result,default=str))
+        return ResponseSchema(detail='Success fetching applications.',result=result)

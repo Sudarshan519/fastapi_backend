@@ -65,6 +65,8 @@ def search_job(query: str, db: Session):
 
 def all_applications(db:Session):
     applications=db.query(JobApplication).all() #.filter(JobApplication.status== '')
+    # result=db.query("*").select_from(JobApplication).offset(1).limit(1).all()
+    print(applications)
  
     return applications
 

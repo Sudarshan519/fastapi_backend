@@ -25,11 +25,10 @@ footer {
 }
 
 .container {
-    margin: 0;
     padding: 10px;
     position: inherit;
 
-    margin: 10px 10px 100px 10px;
+    margin: 10px 10px 200px 10px;
 
 
 
@@ -91,10 +90,13 @@ nav {
     padding: 10px;
     border-radius: 0%;
     margin: 10px;
+
+    min-width: 100px;
+    width: 80%;
     /* border: #7c127c; */
     text-decoration: none;
     background-color: rgb(161, 176, 168);
-
+    overflow: hidden;
     /* background-color: #ebeeef; */
     /* color: rgb(191, 45, 45); */
     transition: 1s;
@@ -207,4 +209,15 @@ tr:nth-child(even) {
 }
 
 
+span {
+    height: 40px;
+    width: 40px;
+    padding: 2px;
+    border: 1px grey;
+}
 
+a {
+    text-decoration: none;
+    height: 40px;
+    border: 1px grey;
+}
