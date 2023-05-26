@@ -8,6 +8,7 @@ from db.session import  get_db, commit_rollback
 from db.models.jobs import JobApplication
 from schemas.base import PageResponse
 class ApplicationRepository:
+    
     @staticmethod
     async def get_all( db:Session,
         page: int = 1,
@@ -57,8 +58,8 @@ class ApplicationRepository:
         offset_page = page - 1
         # # pagination
         # query = (query.offset(offset_page * limit).limit(limit))
-        # query=query[1:3]
-        result=db.query("*").select_from(JobApplication) .offset(offset_page*limit).limit(limit).all()
+        # query=query[1:3] #("*").select_from
+        result=db.query(JobApplication) .offset(offset_page*limit).limit(limit).all()
         print(result)
         # # total record
         total_record =( db.query(func.count("*")).select_from(JobApplication).scalar())

@@ -7,6 +7,10 @@ from fastapi import status
 from typing import Optional
 from typing import Dict
 
+from pyparsing import wraps
+
+# from apis.v1.route_login import get_current_user_from_token
+
 
 class OAuth2PasswordBearerWithCookie(OAuth2):
     def __init__(
@@ -36,3 +40,16 @@ class OAuth2PasswordBearerWithCookie(OAuth2):
             else:
                 return None
         return param
+    
+
+# def auth_required(handler):
+#     @wraps(handler)
+#     async def wrapper( *args, **kwargs):
+#         # do_something_with_request_object(request)
+#         # request=(kwargs.get('request'))
+#         # db=(kwargs.get('db'))
+#         # token=request.cookies.get("access_token")
+#         # if token is None:
+#         get_current_user_from_token
+#         return   handler(*args, **kwargs)
+#     return wrapper

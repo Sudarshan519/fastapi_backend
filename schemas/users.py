@@ -11,9 +11,9 @@ class UserCreate(BaseModel):
 
 
 class ShowUser(BaseModel):   #new
-    username : str 
-    email : EmailStr
-    is_active : bool
+    username : str=None
+    email : EmailStr='test@test.com'
+    is_active : bool=False
 
     class Config():  #tells pydantic to convert even non dict obj to json
         orm_mode = True

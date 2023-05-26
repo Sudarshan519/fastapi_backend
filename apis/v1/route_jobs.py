@@ -4,20 +4,20 @@ from fastapi import APIRouter, Query, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
-from typing import List, Optional
-from db.repository.jobs import all_applications 
+from typing import List, Optional 
 from db.models.jobs import JobApplication
 from db.repository.application import ApplicationRepository
-from db.repository.jobs import add_application
-from schemas.base import PageResponse, ResponseSchema
-from schemas.job_application import JobApplicationCreate        #new
+from db.repository.jobs import add_application, get_jobapplication, all_interviews, interview_by_id
+from schemas.base import BaseResponse, PageResponse, ResponseSchema, SingleJobApplication,SingleFoo,MultipleBar,GenericResponse
+from schemas.interviews import InterviewBase, ShowInterview
+from schemas.job_application import JobApplicationCreate, ShowJobApplication        #new
 from db.session import get_db
 from db.models.jobs import Job
 from db.models.users import User
 from schemas.jobs import JobCreate,ShowJob
 from db.repository.jobs import create_new_job,retreive_job ,list_jobs, search_job,update_job_by_id,update_application_by_id  #new #new import retrieve_job
 from apis.v1.route_login import get_current_user_from_token  #new
-from fastapi_pagination import LimitOffsetPage, add_pagination, paginate
+from fastapi_pagination import LimitOffsetPage, Page, add_pagination, paginate
 router = APIRouter()
 
 
@@ -36,10 +36,10 @@ def read_job(id:int,db:Session = Depends(get_db)):
     return job
 
 
-@router.get("/all",response_model=LimitOffsetPage[List[ShowJob]]) #new
+@router.get("/all",response_model=LimitOffsetPage[ShowJob]) #new
 def read_jobs(db:Session = Depends(get_db)):
     jobs = list_jobs(db=db)
-    return jobs or [] 
+    return paginate(jobs) or [] 
 
 
 @router.put("/update/{id}")   #new
@@ -85,11 +85,14 @@ def autocomplete(term: Optional[str] = None, db: Session = Depends(get_db)):
     return job_titles
 
 
-
-@router.get('/interviews',tags=['Interview'])
-def all_interview(db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
-    return[]
-
+# current_user: User = Depends(get_current_user_from_token)
+@router.get('/interviews',tags=['Interview'],response_model=LimitOffsetPage[InterviewBase])
+def all_interview(db: Session = Depends(get_db)):
+    interviews=all_interviews(db)
+    return paginate(interviews) or []
+@router.get('/interview_by_id/{id}',response_model=InterviewBase)
+def get_interview(id:int,db:Session=Depends(get_db)):
+    return interview_by_id(id,db)
 @router.post('/post-application/')
 def post_application(application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     job=retreive_job(id= application.job_id,db=db)
@@ -103,20 +106,31 @@ def post_application(application: JobApplicationCreate,db: Session = Depends(get
 @router.post('/request-interview')
 def accept_application(application_id:int,application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     application=update_application_by_id(id=application_id,application=application,db=db)
-    return application
-from sqlalchemy.sql import select
-@router.get('/applications/',response_model=ResponseSchema, response_model_exclude_none=True)
-async def applications( 
+    return application 
+
+@router.get('/applications/{id}',response_model=ShowJobApplication)
+async def get_application_by_id(id:int,db:Session=Depends(get_db)):
+    return get_jobapplication(id,db)
+
+@router.get('/applications/',response_model=ResponseSchema[PageResponse[ShowJobApplication]])
+async def all_applications( 
     page: int = 1,
         limit: int = 10,
         columns: str = Query(None, alias="columns"),
         sort: str = Query(None, alias="sort"),
-        filter: str = Query(None, alias="filter"),db:Session=Depends(get_db),):
-        result= await ApplicationRepository.get_all(db,page,limit)
- 
-        # result= all_applications(db) 
+        filter: str = Query(None, alias="filter")
+        ,
+        db:Session=Depends(get_db),):
+        print(page)
+        print(limit)
+        try:
+            result= await ApplicationRepository.get_all(db,page,limit)
+            print(all)
+        except Exception as e:
+            print(e)
+            return e
         # count = db.query(func.count(JobApplication.id)).scalar()
-        # print(count)
+        print(result)
         
         # count query
         # coun/t_query = select(func.count(1)).select_from(qr)
@@ -138,3 +152,13 @@ async def applications(
         #     total_record=2,
         #     content=all)
         return ResponseSchema(detail='Success fetching applications.',result=result)
+
+
+@router.get("/foo/", response_model=GenericResponse[SingleFoo])  # type: ignore[valid-type]
+async def get_one_foo() -> dict[str, object]:
+    return {"status": "foo", "data": {"foo": {"a": "spam", "b": 123}}}
+
+
+@router.get("/bars/", response_model=GenericResponse[MultipleBar])  # type: ignore[valid-type]
+async def get_multiple_bars() -> dict[str, object]:
+    return {"status": "bars", "data": {"bars": [{"x": 3.14}, {"x": 0}]}}

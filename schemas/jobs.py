@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from .base_class import BaseModel
 from datetime import date,datetime
 
 from schemas.users import ShowUser
@@ -7,6 +7,7 @@ from schemas.users import ShowUser
 
 #shared properties
 class JobBase(BaseModel):
+
     title : Optional[str] = None
     company : Optional[str] = None
     company_url : Optional[str] = None
