@@ -150,6 +150,13 @@ footer a {
     margin-right: 20px;
 }
 
+footer a:hover {
+    color: rgb(240, 5, 5);
+    text-decoration: none;
+    padding-top: 10px;
+    text-decoration-color: rgb(247, 5, 5);
+    margin-right: 20px;
+}
 
 #mydiv {
     position: absolute;
