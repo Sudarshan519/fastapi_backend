@@ -1,3 +1,4 @@
+import json
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from db.models.jobs import JobApplication

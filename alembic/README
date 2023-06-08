@@ -1,1 +1,4 @@
 Generic single-database configuration.
+alembic init alembic
+alemibc revision --autogenerate -m "messsage"
+alembic upgrade head/revision
