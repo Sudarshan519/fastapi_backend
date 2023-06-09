@@ -93,13 +93,14 @@ nav {
 
     min-width: 100px;
     width: 80%;
+    text-transform: unset;
     /* border: #7c127c; */
     text-decoration: none;
     background-color: rgb(161, 176, 168);
     overflow: hidden;
     /* background-color: #ebeeef; */
     /* color: rgb(191, 45, 45); */
-    transition: 1s;
+    transition: .1s;
     background-color: white;
 }
 
@@ -114,14 +115,26 @@ nav {
     border: #7c127c;
 } */
 
-/* .card-body:hover, */
+.card-body:hover {
+    color: rgb(164, 58, 58);
+    font-weight: 600;
+    text-decoration-color: #256f83;
+    font-size: 24;
+}
+
 .card:hover {
     margin: 10px;
     border-radius: 3%;
     transform: 4px -5px;
+    /* text-decoration: underline; */
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration-color: #256f83;
+    font-size: 24;
+
     /* background-color: rgb(74, 43, 165); */
     box-shadow: 5px 5px #888888;
-    color: black;
+    color: rgb(164, 58, 58);
 }
 
 /* 

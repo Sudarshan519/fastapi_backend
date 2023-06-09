@@ -38,6 +38,7 @@ class JobApplication(Base):
     # applicant=relationship("User",back_populates="jobs")
     status=Column(String(50),default="")
 
+
 class Interview(Base):
     id = Column(Integer,primary_key = True, index=True)
     title = Column(String(50),nullable= False)

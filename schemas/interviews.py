@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from .base_class import BaseModel
 from datetime import date,datetime,time
     # id = Column(Integer,primary_key = True, index=True)
     # title = Column(String(50),nullable= False)
@@ -14,6 +14,8 @@ class InterviewBase(BaseModel):
     date:Optional[date]
     time:Optional[time]
     applicant_id:int
+    job_id:int
+    status:str=''
 
 #this will be used to validate data while creating a Job
 class InterviewCreate(InterviewBase):
@@ -23,6 +25,8 @@ class InterviewCreate(InterviewBase):
     applicant_id:int
     job_id:int
     status:str
+class ListInterview(InterviewBase):
+    id:int
 
 
 
@@ -42,5 +46,5 @@ class ShowInterview(InterviewBase):
     date_posted : date
     description : Optional[str]
 
-    class Config():  #to convert non dict obj to json
-        orm_mode = True
+    # class Config():  #to convert non dict obj to json
+    #     orm_mode = True

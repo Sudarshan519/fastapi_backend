@@ -72,7 +72,11 @@ def all_applications(db:Session):
 
 def all_interviews(db:Session):
     interviews=db.query(Interview).all() 
+    print(interviews)
     return interviews
+def interview_by_id(id:int,db:Session):
+    interview=db.query(Interview).filter_by(id=id).first()
+    return interview
 
 def add_application(db:Session,application:JobApplication,owner_id:int=None):
     create_application= JobApplication(**application.dict(),applicant_id=owner_id)

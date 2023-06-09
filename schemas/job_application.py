@@ -43,8 +43,8 @@ class JobApplicationCreate(JobApplicationBase):
 #this will be used to format the response to not to have id,owner_id etc
 class ShowJobApplication(JobApplicationBase):
     id: int
-    title : str 
-    company: str 
+    title : str =""
+    company: str =""
     company_url : Optional[str]
     city : str 
     date_posted : date
