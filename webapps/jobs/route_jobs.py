@@ -190,6 +190,7 @@ async def schedule_interview(id:int, request: Request, db: Session = Depends(get
             form.__dict__.get("errors").append('Successfully added interview.')
             return templates.TemplateResponse("jobs/request_interview.html",form.__dict__ )
         except Exception as e: 
+            print(e)
             db.rollback()
             form.__dict__.get("errors").append(
                 "You might not be logged in, In case problem persists please contact us."

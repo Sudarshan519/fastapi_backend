@@ -13,7 +13,7 @@ class Job(Base):
     description = Column(String(256),nullable=False)
     date_posted = Column(Date)
     is_active = Column(Boolean(),default=True)
-    owner_id =  Column(Integer,ForeignKey("user.id",),default=1)
+    owner_id =  Column(Integer,ForeignKey("user.id"),default=1)
     seats=Column(Integer,default=3)
     salary=Column(String(128),default="")
     owner = relationship("User",back_populates="jobs")
@@ -25,16 +25,17 @@ class Job(Base):
 
 class JobApplication(Base):
     id = Column(Integer,primary_key = True, index=True)
-    applicant_id= Column(Integer,ForeignKey("user.id",),default=1,nullable=False)
+    applicant_id= Column(Integer,ForeignKey("user.id",ondelete="CASCADE"),default=1,nullable=False)
     applicant= relationship("User",back_populates="jobapplication")
     designation = Column(String(50),nullable= False)
     address = Column(String(50),nullable= False)
     city = Column(String(50),nullable= False)
     email= Column(String(50),nullable= False)
     phone = Column(String(50),nullable= False)
-    job_id=Column(Integer,ForeignKey("job.id"),default=1)
+    job_id=Column(Integer,ForeignKey("job.id",ondelete="CASCADE"),default=1)
+    job=relationship('Job' )
     date_posted=Column(Date)
-#     # job=relationship("Job",back_populates="applications")
+    # job=relationship("Job",back_populates="applications")
     # applicant=relationship("User",back_populates="jobs")
     status=Column(String(50),default="")
 
@@ -42,11 +43,12 @@ class JobApplication(Base):
 class Interview(Base):
     id = Column(Integer,primary_key = True, index=True)
     title = Column(String(50),nullable= False)
-    applicant_id= Column(Integer,ForeignKey("user.id",),default=1,nullable=False)
+    applicant_id= Column(Integer,ForeignKey("user.id"),default=1,nullable=True)
 
     applicant= relationship("User",back_populates="interview")
     
-    job_id=Column(Integer,ForeignKey("jobapplication.id",))
+    job_id=Column(Integer,ForeignKey("jobapplication.id"))
+    application=relationship('JobApplication')
     date=Column(Date)
     time=Column(Time)
     status=Column(String(50),nullable= False)

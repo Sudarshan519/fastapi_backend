@@ -4,7 +4,8 @@ from fastapi import APIRouter, Query, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import Depends,HTTPException,status
-from typing import List, Optional 
+from typing import List, Optional
+from apis.utils import auth_required ,requires_employee
 from db.models.jobs import JobApplication
 from db.repository.application import ApplicationRepository
 from db.repository.jobs import add_application, get_jobapplication, all_interviews, interview_by_id
@@ -22,6 +23,7 @@ router = APIRouter()
 
 
 @router.post("/create-job/",response_model=ShowJob)
+
 def create_job(job: JobCreate,db: Session = Depends(get_db),current_user:User = Depends(get_current_user_from_token)):  #new dependency here):
     job = create_new_job(job=job,db=db,owner_id=current_user.id)
     return job
@@ -29,6 +31,7 @@ def create_job(job: JobCreate,db: Session = Depends(get_db),current_user:User = 
 
 #new function
 @router.get("/get/{id}",response_model=ShowJob) # if we keep just "{id}" . it would stat catching all routes
+
 def read_job(id:int,db:Session = Depends(get_db)):
     job = retreive_job(id=id,db=db)
     if not job:
@@ -54,6 +57,7 @@ def update_job(id: int,job: JobCreate,db: Session = Depends(get_db)):
 from db.repository.jobs import delete_job_by_id
 
 @router.delete("/delete/{id}")
+# @auth_required
 def delete_job(id: int,request:Request,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     # current_user_id = 1
     print(request.cookies)
@@ -87,12 +91,16 @@ def autocomplete(term: Optional[str] = None, db: Session = Depends(get_db)):
 
 # current_user: User = Depends(get_current_user_from_token)
 @router.get('/interviews',tags=['Interview'],response_model=LimitOffsetPage[InterviewBase])
+@auth_required
 def all_interview(db: Session = Depends(get_db)):
     interviews=all_interviews(db)
     return paginate(interviews) or []
+
+
 @router.get('/interview_by_id/{id}',response_model=InterviewBase)
 def get_interview(id:int,db:Session=Depends(get_db)):
     return interview_by_id(id,db)
+
 @router.post('/post-application/')
 def post_application(application: JobApplicationCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user_from_token)):
     job=retreive_job(id= application.job_id,db=db)
@@ -151,7 +159,7 @@ async def all_applications(
         #     total_pages=1,
         #     total_record=2,
         #     content=all)
-        return ResponseSchema(detail='Success fetching applications.',result=result)
+        return ResponseSchema(status='Success fetching applications.',data=result)
 
 
 @router.get("/foo/", response_model=GenericResponse[SingleFoo])  # type: ignore[valid-type]

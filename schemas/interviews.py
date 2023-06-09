@@ -1,4 +1,8 @@
 from typing import Optional
+
+from schemas.job_application import ShowJobApplication
+
+from  .users import ShowUser
 from .base_class import BaseModel
 from datetime import date,datetime,time
     # id = Column(Integer,primary_key = True, index=True)
@@ -19,12 +23,8 @@ class InterviewBase(BaseModel):
 
 #this will be used to validate data while creating a Job
 class InterviewCreate(InterviewBase):
-    title:Optional[str]
-    date:date
-    time:time
-    applicant_id:int
-    job_id:int
-    status:str
+    pass
+    
 class ListInterview(InterviewBase):
     id:int
 
@@ -45,6 +45,7 @@ class ShowInterview(InterviewBase):
     city : str 
     date_posted : date
     description : Optional[str]
-
+    application:ShowJobApplication=None
+    applicant:ShowUser
     # class Config():  #to convert non dict obj to json
     #     orm_mode = True
