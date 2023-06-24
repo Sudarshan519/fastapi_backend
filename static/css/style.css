@@ -93,7 +93,7 @@ nav {
 
     min-width: 100px;
     width: 80%;
-    text-transform: unset;
+    text-transform: capitalize;
     /* border: #7c127c; */
     text-decoration: none;
     background-color: rgb(161, 176, 168);
@@ -117,7 +117,7 @@ nav {
 
 .card-body:hover {
     color: rgb(164, 58, 58);
-    font-weight: 600;
+    font-weight: 800;
     text-decoration-color: #256f83;
     font-size: 24;
 }
@@ -128,7 +128,7 @@ nav {
     transform: 4px -5px;
     /* text-decoration: underline; */
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 900;
     text-decoration-color: #256f83;
     font-size: 24;
 

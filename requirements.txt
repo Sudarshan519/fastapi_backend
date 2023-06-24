@@ -43,3 +43,6 @@ python-multipart
 # Backgound task
 redis==4.5.4
 celery==5.2.7
+
+fastapi-pagination
+pyparsing
