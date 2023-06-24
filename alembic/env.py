@@ -1,3 +1,8 @@
+# Generic single-database configuration.
+# alembic init  alembic
+# alembic revision --autogenerate -m "init" 
+# alembic upgrade head
+
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config

@@ -1,0 +1,310 @@
+[
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Taplejung"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Solukhumbu"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Sankhuwasabha"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Udayapur"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Morang"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Ilam"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Jhapa"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Khotang"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Bhojpur"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Panchthar"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Sunsari"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Okhaldhunga"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Dhankuta"
+    },
+    {
+        "province": "Koshi Province(Provice no. 1)",
+        "district": "Terhathum"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Bara"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Dhanusa"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Mahottari"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Parsa"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Rautahat"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Saptari"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Sarlahi"
+    },
+    {
+        "province": "Madesh Province(Province no. 2)",
+        "district": "Siraha"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Bhaktapur District"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Chitwan"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Dhading"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Dolakha"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Kathmandu"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Kavrepalanchok"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Lalitpur"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Makawanpur"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Nuwakot District"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Ramechhap"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Rasuwa"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Sindhuli"
+    },
+    {
+        "province": "Bagmati Province (Province no. 3)",
+        "district": "Sindhupalchok"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Baglung"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Gorkha"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Kaski"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Lamjung"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Manang"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Mustang"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Myagdi"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Nawalparasi (Bardaghat Susta Purba)"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Parbat"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Syangja"
+    },
+    {
+        "province": "Gandaki Province (Province no. 4)",
+        "district": "Tanahu District"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Arghakhanchi"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Banke"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Bardiya"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Dang"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Gulmi"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Kapilvastu"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Nawalparasi (Bardaghat Susta Paschim)"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Palpa"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Pyuthan"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Rolpa"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Purbi Rukum"
+    },
+    {
+        "province": "Lumbini Province (Province no. 5)",
+        "district": "Rupandehi"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Dailekh "
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Dolpa"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Humla"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Jajarkot"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Jumla"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Kalikot"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Mugu"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Rukum Paschim"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Salyan"
+    },
+    {
+        "province": "Karnali Province (Province no. 6)",
+        "district": "Surkhet"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Achham"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Baitadi"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Bajhang"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Bajura"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Dadeldhura"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Darchula"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Doti"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Kailali"
+    },
+    {
+        "province": "Sudur-Paschim Province (Province no. 7)",
+        "district": "Kanchanpur"
+    }
+]

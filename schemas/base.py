@@ -12,8 +12,8 @@ from schemas.job_application import JobApplicationBase, ShowJobApplication
 T = TypeVar('T')
 
 class ResponseSchema(GenericModel, Generic[T]):#(BaseModel):#
-    detail: str
-    result: Optional[T] = None
+    status: str
+    data: Optional[T] = None
 
 
 class PageResponse(GenericModel, Generic[T]):

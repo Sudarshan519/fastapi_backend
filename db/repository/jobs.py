@@ -1,3 +1,4 @@
+import json
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from db.models.jobs import JobApplication
@@ -35,7 +36,7 @@ def filter_jobs(db:Session,ownerId:int):
 def update_job_by_id(id:int, job: JobCreate,db: Session,owner_id):
     existing_job = db.query(Job).filter(Job.id == id)
     if not existing_job.first():
-        return 0
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Job with {id} does not exist")
     job.__dict__.update(owner_id=owner_id)  #update dictionary with new key value of owner_id
     existing_job.update(job.__dict__)
     db.commit()
@@ -44,7 +45,7 @@ def update_job_by_id(id:int, job: JobCreate,db: Session,owner_id):
 def delete_job_by_id(id: int,db:Session,owner_id):
     existing_job = db.query(Job).filter(Job.id == id)
     if not existing_job.first():
-        return 0
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Job with id {id} does not exist")
     existing_job.delete(synchronize_session=False)
     db.commit()
     return 1
@@ -103,7 +104,7 @@ def update_application_by_id(id:int,status:str,db:Session):
         application.status = "on_interview"
         db.commit()  
         return application
-    return None
+    raise None
 
 def add_interviews(interview:Interview,db:Session):
     

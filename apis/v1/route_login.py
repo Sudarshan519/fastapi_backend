@@ -19,16 +19,22 @@ from fastapi.security.utils import get_authorization_scheme_param
 
 
 router = APIRouter()
+
+ 
 # @login_required
 def authenticate_user(username: str, password: str,db: Session):
-    user = get_user(username=username,db=db)
-    print(user)
+    user = get_user(username=username,db=db) 
     if not user:
         return False
     if not Hasher.verify_password(password, user.hashed_password):
         return False
     return user
 
+
+# @router.post('employer/token')
+# def employer_login(response: Response,form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+#     user= authenticate_user(form_data.username, form_data.password,db)
+    
 
 @router.post("/token", response_model=Token)
 def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):  #added response as a function parameter
@@ -38,6 +44,7 @@ def login_for_access_token(response: Response,form_data: OAuth2PasswordRequestFo
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
         )
+    
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
