@@ -24,7 +24,7 @@ from fastapi_pagination import LimitOffsetPage, Page, add_pagination, paginate
 router = APIRouter()
 
 @router.get('/data')
-@cache(expire=60)
+# @cache(expire=60)
 def all_provinces():
     f=open('apis/v1/province_districts.json')
     data=json.load(f)
@@ -169,11 +169,11 @@ async def all_applications(
         return ResponseSchema(status='Success fetching applications.',data=result)
 
 
-@router.get("/foo/", response_model=GenericResponse[SingleFoo])  # type: ignore[valid-type]
-async def get_one_foo() -> dict[str, object]:
-    return {"status": "foo", "data": {"foo": {"a": "spam", "b": 123}}}
+# @router.get("/foo/", response_model=GenericResponse[SingleFoo])  # type: ignore[valid-type]
+# async def get_one_foo() -> dict[str, object]:
+#     return {"status": "foo", "data": {"foo": {"a": "spam", "b": 123}}}
 
 
-@router.get("/bars/", response_model=GenericResponse[MultipleBar])  # type: ignore[valid-type]
-async def get_multiple_bars() -> dict[str, object]:
-    return {"status": "bars", "data": {"bars": [{"x": 3.14}, {"x": 0}]}}
+# @router.get("/bars/", response_model=GenericResponse[MultipleBar])  # type: ignore[valid-type]
+# async def get_multiple_bars() -> dict[str, object]:
+#     return {"status": "bars", "data": {"bars": [{"x": 3.14}, {"x": 0}]}}

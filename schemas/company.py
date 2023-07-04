@@ -14,4 +14,4 @@ class CompanyBase(BaseModel):
     def number_validator(cls, values):
         values["updated_at"] = datetime.now()
         return values
-    
+     
